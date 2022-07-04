@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <style>
+        html,
+        body,
+        #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            /* margin: 0; */
+            margin-top: 0px;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-right: 0;
+            position: absolute;
+            /* top: 60px; */
+        }
+    </style>
+    <title></title>
+</head>
+
+<body>
+    <div style="line-height: 60px; text-align: center; background: #FFC300; margin: 0;">
+    <h1 style="margin: 0;">Rio Macro</h1>
+    </div>
+    <div id="map">
+    </div>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/multi-style-layer.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="data/cuenca_vec_0.js"></script>
+    <script src="data/rios_cuenca_vec_1.js"></script>
+    <script>
+        var map = L.map('map', {
+            zoomControl: true, maxZoom: 28, minZoom: 1
+        }).fitBounds([[-13.701960860101845, -74.39328092967061], [-13.462948001574162, -73.95040416239873]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({ truncate: { length: 30, location: 'smart' } });
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        function pop_cuenca_vec_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cat'] !== null ? autolinker.link(feature.properties['cat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['value'] !== null ? autolinker.link(feature.properties['value'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['label'] !== null ? autolinker.link(feature.properties['label'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, { maxHeight: 400 });
+        }
+
+        var pattern_cuenca_vec_0_0 = new L.StripePattern({
+            weight: 0.3,
+            spaceWeight: 2.0,
+            color: '#4daf4a',
+            opacity: 1.0,
+            spaceOpacity: 0,
+            angle: 315
+        });
+        pattern_cuenca_vec_0_0.addTo(map);
+        function style_cuenca_vec_0_0() {
+            return {
+                pane: 'pane_cuenca_vec_0',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_cuenca_vec_0_0,
+                interactive: true,
+            }
+        }
+        function style_cuenca_vec_0_1() {
+            return {
+                pane: 'pane_cuenca_vec_0',
+                opacity: 1,
+                color: 'rgba(77,175,74,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_cuenca_vec_0');
+        map.getPane('pane_cuenca_vec_0').style.zIndex = 400;
+        map.getPane('pane_cuenca_vec_0').style['mix-blend-mode'] = 'normal';
+        var layer_cuenca_vec_0 = new L.geoJson.multiStyle(json_cuenca_vec_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_cuenca_vec_0',
+            layerName: 'layer_cuenca_vec_0',
+            pane: 'pane_cuenca_vec_0',
+            onEachFeature: pop_cuenca_vec_0,
+            styles: [style_cuenca_vec_0_0, style_cuenca_vec_0_1,]
+        });
+        bounds_group.addLayer(layer_cuenca_vec_0);
+        map.addLayer(layer_cuenca_vec_0);
+        function pop_rios_cuenca_vec_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"> <strong>Index: </strong>' + (feature.properties['cat'] !== null ? autolinker.link(feature.properties['cat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"> <strong>Value: </strong>' + (feature.properties['value'] !== null ? autolinker.link(feature.properties['value'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"> <strong>Label: </strong>' + (feature.properties['label'] !== null ? autolinker.link(feature.properties['label'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"> <strong>Text: </strong>' + (feature.properties['text'] !== null ? autolinker.link(feature.properties['text'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"> <strong>Link: </strong>' + (feature.properties['link'] !== null ? autolinker.link(feature.properties['link'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['imagen'] !== null ? autolinker.link(feature.properties['imagen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table> \
+                <img src="./images/'+feature.properties['imagen']+'.jpg" width="300" target="_blank">';
+
+            layer.bindPopup(popupContent, { maxHeight: 400 });
+        }
+
+        function style_rios_cuenca_vec_1_0() {
+            return {
+                pane: 'pane_rios_cuenca_vec_1',
+                interactive: true,
+            }
+        }
+        function style_rios_cuenca_vec_1_1() {
+            return {
+                pane: 'pane_rios_cuenca_vec_1',
+                opacity: 1,
+                color: 'rgba(0, 73, 255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_rios_cuenca_vec_1');
+        map.getPane('pane_rios_cuenca_vec_1').style.zIndex = 401;
+        map.getPane('pane_rios_cuenca_vec_1').style['mix-blend-mode'] = 'normal';
+        var layer_rios_cuenca_vec_1 = new L.geoJson.multiStyle(json_rios_cuenca_vec_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_rios_cuenca_vec_1',
+            layerName: 'layer_rios_cuenca_vec_1',
+            pane: 'pane_rios_cuenca_vec_1',
+            onEachFeature: pop_rios_cuenca_vec_1,
+            styles: [style_rios_cuenca_vec_1_0, style_rios_cuenca_vec_1_1,]
+        });
+        bounds_group.addLayer(layer_rios_cuenca_vec_1);
+        map.addLayer(layer_rios_cuenca_vec_1);
+        setBounds();
+        /*************************************************Background layers************************/
+        var openstreetmap = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+            maxZoom: 20
+        })
+        var GoogleSatellite = L.tileLayer(
+            'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            attribution: 'Google map',
+            maxZoom: 20
+        })
+        var allOptions = {
+            "Open streetmap": openstreetmap,
+            "Google Satelite": GoogleSatellite
+        };
+        openstreetmap.addTo(map);
+        L.control.layers(allOptions).addTo(map);
+        /*************************************************Final Background layers************************/
+    </script>
+</body>
+
+</html>
